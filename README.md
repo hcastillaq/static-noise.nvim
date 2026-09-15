@@ -86,6 +86,20 @@ require("static-noise").setup({
 
 ---
 
+## 🎨 Fuente de Verdad y Sincronización
+
+Este plugin consume los tokens cromáticos canónicos definidos en el repositorio base [`static-noise`](https://github.com/hcastillaq/static-noise). 
+
+Para los mantenedores, los colores **nunca se editan a mano**. Se actualizan ejecutando el script de sincronización:
+
+```bash
+./scripts/sync-palette.sh
+```
+
+El script consulta la salida compilada de `static-noise` (local o remota vía GitHub) y regenera `lua/static-noise/palette.lua` de forma 100% automatizada.
+
+---
+
 ## 📄 Licencia
 
 MIT License © [Hernan Castilla](https://github.com/hcastillaq)
