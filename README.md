@@ -77,6 +77,7 @@ require("static-noise").setup({
 
 * **Tree-sitter** (Resaltado semántico completo)
 * **LSP Diagnostics** (Bordes, virtuales y undercurls)
+* **Lualine** (tema detectado automáticamente, con superficie elevada)
 * **GitSigns**
 * **Neo-tree**
 * **Telescope**
