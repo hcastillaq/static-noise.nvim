@@ -1,0 +1,8 @@
+vim.opt.runtimepath:prepend(vim.fn.getcwd())
+local palette = require("static-noise.palette")
+assert(type(palette.primitives) == "table")
+assert(type(palette.semantic) == "table")
+assert(type(palette.domains) == "table")
+assert(type(palette.projections) == "table")
+assert(palette.highlights == nil, "generated palette must not contain highlight groups")
+print("build spec passed")

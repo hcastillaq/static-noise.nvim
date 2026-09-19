@@ -1,38 +1,42 @@
--- Static Noise Lualine theme.
--- Loaded automatically by Lualine when `options.theme = "auto"`.
-
 local palette = require("static-noise.palette")
-local statusline = { fg = palette.textSoft, bg = palette.raised }
+local colors = require("static-noise.semantic").resolve(palette, false)
 
-return {
+local theme = {
   normal = {
-    a = { fg = palette.cyan, bg = palette.raised, gui = "bold" },
-    b = statusline,
-    c = statusline,
+    a = { fg = colors.interaction.on_focus, bg = colors.interaction.focus, gui = "bold" },
+    b = { fg = colors.content.primary, bg = colors.surface.elevated },
+    c = { fg = colors.content.secondary, bg = colors.surface.statusline },
   },
   insert = {
-    a = { fg = palette.green, bg = palette.raised, gui = "bold" },
-    b = statusline,
-    c = statusline,
+    a = { fg = colors.interaction.on_focus, bg = colors.status.success, gui = "bold" },
+    b = { fg = colors.content.primary, bg = colors.surface.elevated },
+    c = { fg = colors.content.secondary, bg = colors.surface.statusline },
   },
   visual = {
-    a = { fg = palette.purple, bg = palette.raised, gui = "bold" },
-    b = statusline,
-    c = statusline,
+    a = { fg = colors.interaction.on_focus, bg = colors.syntax.function_, gui = "bold" },
+    b = { fg = colors.content.primary, bg = colors.surface.elevated },
+    c = { fg = colors.content.secondary, bg = colors.surface.statusline },
   },
   replace = {
-    a = { fg = palette.red, bg = palette.raised, gui = "bold" },
-    b = statusline,
-    c = statusline,
+    a = { fg = colors.interaction.on_focus, bg = colors.status.danger, gui = "bold" },
+    b = { fg = colors.content.primary, bg = colors.surface.elevated },
+    c = { fg = colors.content.secondary, bg = colors.surface.statusline },
   },
   command = {
-    a = { fg = palette.yellow, bg = palette.raised, gui = "bold" },
-    b = statusline,
-    c = statusline,
+    a = { fg = colors.interaction.on_focus, bg = colors.status.warning, gui = "bold" },
+    b = { fg = colors.content.primary, bg = colors.surface.elevated },
+    c = { fg = colors.content.secondary, bg = colors.surface.statusline },
+  },
+  terminal = {
+    a = { fg = colors.interaction.on_focus, bg = colors.status.success, gui = "bold" },
+    b = { fg = colors.content.primary, bg = colors.surface.elevated },
+    c = { fg = colors.content.secondary, bg = colors.surface.statusline },
   },
   inactive = {
-    a = { fg = palette.muted, bg = palette.raised },
-    b = statusline,
-    c = statusline,
+    a = { fg = colors.content.muted, bg = colors.surface.statusline },
+    b = { fg = colors.content.muted, bg = colors.surface.statusline },
+    c = { fg = colors.content.subtle, bg = colors.surface.statusline },
   },
 }
+
+return theme
