@@ -1,0 +1,24 @@
+FROM anatolelucet/neovim:0.12.5-alpine
+
+RUN apk add --no-cache git curl gcc musl-dev tree-sitter-cli
+
+COPY . /workspace
+WORKDIR /workspace
+
+RUN nvim --headless --clean -u NONE -l /workspace/scripts/main.lua
+
+RUN mkdir -p /root/.local/share/nvim/site/pack/colors/start/static-noise.nvim
+RUN cp -R /workspace/colors /root/.local/share/nvim/site/pack/colors/start/static-noise.nvim
+RUN cp -R /workspace/lua /root/.local/share/nvim/site/pack/colors/start/static-noise.nvim
+
+RUN git clone --filter=blob:none --branch=stable https://github.com/folke/lazy.nvim.git /root/.local/share/nvim/lazy/lazy.nvim
+
+RUN mkdir -p /root/.config/nvim/lua/config
+COPY docker/nvim/init.lua /root/.config/nvim/init.lua
+COPY docker/nvim/config/plugins.lua /root/.config/nvim/lua/config/plugins.lua
+
+RUN nvim --headless -u /root/.config/nvim/init.lua -c "lua require('lazy').sync({ wait = true })" -c "qa"
+RUN nvim --headless -u /root/.config/nvim/init.lua -c "lua require('nvim-treesitter').install({ 'lua', 'javascript', 'vim' }):wait(300000)" -c "qa"
+RUN nvim --headless -u /root/.config/nvim/init.lua -c "lua assert(vim.g.colors_name == 'static-noise')" -c "qa"
+
+CMD ["sh"]

@@ -1,0 +1,25 @@
+return function(c)
+  return {
+    DiagnosticSignError = { fg = c.status.danger },
+    DiagnosticSignWarn = { fg = c.status.warning },
+    DiagnosticSignInfo = { fg = c.syntax.function_ },
+    DiagnosticSignHint = { fg = c.interaction.focus },
+    DiagnosticVirtualTextError = { fg = c.status.danger, bg = c.surface.selection },
+    DiagnosticVirtualTextWarn = { fg = c.status.warning, bg = c.surface.selection },
+    DiagnosticVirtualTextInfo = { fg = c.syntax.function_, bg = c.surface.selection },
+    DiagnosticVirtualTextHint = { fg = c.interaction.focus, bg = c.surface.selection },
+    DiagnosticFloatingError = { fg = c.status.danger },
+    DiagnosticFloatingWarn = { fg = c.status.warning },
+    DiagnosticFloatingInfo = { fg = c.syntax.function_ },
+    DiagnosticFloatingHint = { fg = c.interaction.focus },
+    DiagnosticUnderlineError = { undercurl = true, sp = c.status.danger },
+    DiagnosticUnderlineWarn = { undercurl = true, sp = c.status.warning },
+    DiagnosticUnderlineInfo = { undercurl = true, sp = c.syntax.function_ },
+    DiagnosticUnderlineHint = { undercurl = true, sp = c.interaction.focus },
+    LspReferenceText = { bg = c.surface.selection },
+    LspReferenceRead = { bg = c.surface.selection },
+    LspReferenceWrite = { bg = c.surface.selection },
+    LspCodeLens = { fg = c.content.muted },
+    LspCodeLensSeparator = { fg = c.outline.subtle },
+  }
+end

@@ -18,9 +18,7 @@ function M.setup(opts)
 end
 
 function M.load()
-  if vim.g.colors_name then
-    vim.cmd("hi clear")
-  end
+  vim.cmd("hi clear")
 
   if vim.fn.exists("syntax_on") then
     vim.cmd("syntax reset")
@@ -30,9 +28,10 @@ function M.load()
   vim.o.termguicolors = true
 
   local palette = require("static-noise.palette")
+  local semantic = require("static-noise.semantic")
   local highlights = require("static-noise.highlights")
 
-  highlights.setup(palette, M.config)
+  highlights.setup(semantic.resolve(palette, M.config.transparent), M.config)
 end
 
 return M
