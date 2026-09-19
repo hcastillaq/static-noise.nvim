@@ -1,49 +1,67 @@
 # ⚡ static-noise.nvim
 
-> High-contrast dark colorscheme for Neovim (0.9+) with full Tree-sitter, LSP, and plugin support.
+Un adaptador instalable para Neovim de **[Static Noise](https://github.com/hcastillaq/static-noise)**: una identidad visual oscura, profunda y eléctrica para herramientas de desarrollo.
 
-**Static Noise** is an electric-pastel dark colorscheme designed for extreme contrast, zero visual fatigue, and crisp code hierarchy.
+Este repositorio no define una paleta independiente. Traduce la paleta original de Static Noise a los grupos de highlights de Neovim y sus plugins. Puedes conocer la paleta y la identidad visual completa en el [proyecto original](https://github.com/hcastillaq/static-noise), antes de explorar su adaptación para Neovim.
 
----
+A partir de esa base, `static-noise.nvim` añade la integración específica de Neovim. Tiene soporte para:
 
-## 📦 Instalación
+- Tree-sitter
+- LSP Diagnostics
+- Lualine
+- GitSigns
+- Neo-tree
+- Telescope
+- Which-Key v3
+- Flash.nvim
+- Trouble.nvim
 
-### Con [lazy.nvim](https://github.com/folke/lazy.nvim)
+## Requisitos
+
+- Neovim 0.9 o superior.
+- Una terminal con soporte para colores verdaderos (`termguicolors`).
+
+## Instalación
+
+### lazy.nvim
+
+Añade el siguiente bloque a tu configuración:
 
 ```lua
--- lua/plugins/colorscheme.lua
+{
+  "hcastillaq/static-noise.nvim",
+  lazy = false,
+  priority = 1000,
+  opts = {
+    transparent = true,
+    styles = {
+      comments = { italic = true },
+      keywords = { italic = true },
+      functions = { italic = true },
+    },
+  },
+}
+```
+
+Después, selecciona el tema:
+
+```lua
+vim.cmd.colorscheme("static-noise")
+```
+
+### LazyVim
+
+Crea `lua/plugins/colorscheme.lua`:
+
+```lua
 return {
   {
     "hcastillaq/static-noise.nvim",
     lazy = false,
     priority = 1000,
     opts = {
-      transparent = true, -- Activa/desactiva fondo transparente
-      styles = {
-        comments = { italic = true },
-        keywords = { italic = true },
-        functions = { italic = true },
-      },
+      transparent = true,
     },
-    config = function(_, opts)
-      require("static-noise").setup(opts)
-      vim.cmd.colorscheme("static-noise")
-    end,
-  },
-}
-```
-
-### Con LazyVim
-
-Si usas [LazyVim](https://lazyvim.org), agrégalo en `lua/plugins/colorscheme.lua`:
-
-```lua
-return {
-  {
-    "hcastillaq/static-noise.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = { transparent = true },
   },
   {
     "LazyVim/LazyVim",
@@ -54,44 +72,118 @@ return {
 }
 ```
 
----
+### Instalación manual
 
-## ⚙️ Opciones de Configuración
+Clona el repositorio dentro de tu directorio de paquetes de Neovim:
 
-Valores por defecto:
+```sh
+git clone https://github.com/hcastillaq/static-noise.nvim \
+  ~/.local/share/nvim/site/pack/colors/start/static-noise.nvim
+```
+
+Luego añade a tu configuración:
+
+```lua
+vim.cmd.colorscheme("static-noise")
+```
+
+## Configuración
+
+Todas las opciones son opcionales:
 
 ```lua
 require("static-noise").setup({
-  transparent = true, -- true: hereda el fondo de tu terminal (Ghostty/Alacritty/Kitty)
+  transparent = true,
   styles = {
     comments = { italic = true },
     keywords = { italic = true },
     functions = { italic = true },
   },
 })
+
+vim.cmd.colorscheme("static-noise")
 ```
 
----
+### Opciones
 
-## 🔌 Plugins Soportados
+- `transparent`: usa el fondo de tu terminal cuando es `true`.
+- `styles.comments.italic`: aplica cursiva a los comentarios.
+- `styles.keywords.italic`: aplica cursiva a las palabras clave.
+- `styles.functions.italic`: aplica cursiva a las funciones.
 
-* **Tree-sitter** (Resaltado semántico completo)
-* **LSP Diagnostics** (Bordes, virtuales y undercurls)
-* **GitSigns**
-* **Neo-tree**
-* **Telescope**
-* **Which-Key (v3)**
-* **Flash.nvim**
-* **Trouble.nvim**
+## Integraciones
 
----
+`static-noise.nvim` es el colorscheme que proporciona todos estos highlights. Primero instálalo y actívalo:
 
-## 🎨 Fuente de Verdad y Sincronización
+```lua
+require("static-noise").setup({})
+vim.cmd.colorscheme("static-noise")
+```
 
-Este plugin consume la paleta canónica de [`static-noise`](https://github.com/hcastillaq/static-noise). Los releases etiquetados del repositorio canónico abren automáticamente un PR que sincroniza `lua/static-noise/palette.lua` desde un commit SHA inmutable y registra su procedencia en `UPSTREAM.md`.
+El tema solo define colores; no instala ni configura los plugins. Instálalos con tu gestor habitual y carga `static-noise` después de ellos. Si usas `lazy.nvim`, la especificación mínima es:
 
----
+```lua
+{
+  "hcastillaq/static-noise.nvim",
+  lazy = false,
+  priority = 1000,
+}
+```
 
-## 📄 Licencia
+### Tree-sitter
 
-MIT License © [Hernan Castilla](https://github.com/hcastillaq)
+Incluye capturas semánticas para variables, funciones, métodos, keywords, tipos, strings, tags y puntuación. Con la API actual de `nvim-treesitter`:
+
+```lua
+require("nvim-treesitter").setup({})
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(args)
+    vim.treesitter.start(args.buf)
+  end,
+})
+```
+
+### LSP Diagnostics
+
+Incluye colores para signos, texto virtual, ventanas flotantes, bordes y undercurls. Solo necesitas configurar tu cliente LSP:
+
+```lua
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  float = { border = "rounded" },
+})
+```
+
+### Lualine
+
+El tema se detecta automáticamente por su nombre y usa superficies elevadas:
+
+```lua
+require("lualine").setup({
+  options = { theme = "auto" },
+})
+```
+
+También puedes seleccionarlo explícitamente con `theme = "static-noise"`.
+
+### Plugins con grupos dedicados
+
+GitSigns, Neo-tree, Telescope, Which-Key v3, Flash.nvim y Trouble.nvim reciben grupos de highlights dedicados. Después de instalarlos, no requieren configuración adicional del colorscheme:
+
+```lua
+vim.cmd.colorscheme("static-noise")
+```
+
+Sus comandos y mappings siguen siendo los definidos por cada plugin. Por ejemplo, una configuración mínima puede añadir tus propios mappings:
+
+```lua
+vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>")
+vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
+vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>")
+```
+
+## Licencia
+
+MIT © [Hernan Castilla](https://github.com/hcastillaq)

@@ -1,0 +1,31 @@
+name: Build and validate Neovim adapter
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install supported Neovim
+        env:
+          NVIM_VERSION: 0.9.5
+        run: |
+          curl --fail --silent --show-error --location \
+            "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux64.tar.gz" \
+            | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/nvim-linux64/bin" >> "$GITHUB_PATH"
+      - name: Build and validate the adapter
+        run: ./scripts/main.lua
+      - name: Reject generated drift
+        run: git diff --exit-code -- lua/static-noise/palette.lua
+      - name: Run focused tests
+        run: |
+          nvim --headless --clean -u NONE -l tests/build_spec.lua
+          nvim --headless --clean -u NONE -l tests/contract_spec.lua
+          nvim --headless --clean -u NONE -l tests/colorscheme_spec.lua

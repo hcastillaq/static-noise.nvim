@@ -1,0 +1,38 @@
+return function(c, config)
+  local keyword_italic = config.styles.keywords.italic
+  local function_italic = config.styles.functions.italic
+  return {
+    Comment = { fg = c.content.muted, italic = config.styles.comments.italic },
+    Constant = { fg = c.syntax.constant },
+    String = { fg = c.syntax.string },
+    Character = { fg = c.syntax.string },
+    Number = { fg = c.syntax.constant },
+    Boolean = { fg = c.syntax.constant, bold = true },
+    Float = { fg = c.syntax.constant },
+    Identifier = { fg = c.content.primary },
+    Function = { fg = c.syntax.function_, italic = function_italic },
+    Statement = { fg = c.syntax.keyword, italic = keyword_italic },
+    Conditional = { fg = c.syntax.keyword, italic = keyword_italic },
+    Repeat = { fg = c.syntax.keyword, italic = keyword_italic },
+    Label = { fg = c.interaction.focus },
+    Operator = { fg = c.interaction.focus },
+    Keyword = { fg = c.syntax.keyword, italic = keyword_italic },
+    Exception = { fg = c.syntax.error, bold = true },
+    PreProc = { fg = c.syntax.preprocessor },
+    Include = { fg = c.syntax.preprocessor, italic = keyword_italic },
+    Define = { fg = c.syntax.preprocessor },
+    Macro = { fg = c.syntax.preprocessor },
+    Type = { fg = c.syntax.type },
+    StorageClass = { fg = c.syntax.keyword },
+    Structure = { fg = c.syntax.type },
+    Typedef = { fg = c.syntax.type },
+    Special = { fg = c.interaction.focus },
+    SpecialChar = { fg = c.interaction.focus },
+    Tag = { fg = c.status.danger },
+    Delimiter = { fg = c.content.muted },
+    Debug = { fg = c.status.danger },
+    Underlined = { underline = true },
+    Error = { fg = c.syntax.error, bold = true },
+    Todo = { fg = c.interaction.on_focus, bg = c.status.warning, bold = true },
+  }
+end

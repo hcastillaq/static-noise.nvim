@@ -17,14 +17,37 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           test "v$(tr -d '[:space:]' < VERSION)" = "$TAG"
-      - name: Install Neovim
+      - name: Install supported Neovim
+        env:
+          NVIM_VERSION: 0.9.5
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes neovim
-      - name: Load the colorscheme in a clean Neovim instance
+          curl --fail --silent --show-error --location \
+            "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux64.tar.gz" \
+            | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/nvim-linux64/bin" >> "$GITHUB_PATH"
+      - name: Build and validate the adapter
+        run: ./scripts/main.lua
+      - name: Reject generated drift
+        run: git diff --exit-code -- lua/static-noise/palette.lua
+      - name: Run focused tests
         run: |
-          nvim --headless --clean --cmd "set rtp+=$PWD" '+colorscheme static-noise' '+lua assert(vim.g.colors_name == "static-noise")' +qa
+          nvim --headless --clean -u NONE -l tests/build_spec.lua
+          nvim --headless --clean -u NONE -l tests/contract_spec.lua
+          nvim --headless --clean -u NONE -l tests/colorscheme_spec.lua
+      - name: Package runtime files
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          package_dir="$RUNNER_TEMP/static-noise.nvim"
+          mkdir -p "$package_dir"
+          cp -R colors lua "$package_dir/"
+          (
+            cd "$RUNNER_TEMP"
+            zip -qr "static-noise.nvim-${TAG}.zip" static-noise.nvim
+          )
+          unzip -Z1 "$RUNNER_TEMP/static-noise.nvim-${TAG}.zip" | grep -E '(^|/)(colors/|lua/)'
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          files: ${{ runner.temp }}/static-noise.nvim-${{ github.ref_name }}.zip
