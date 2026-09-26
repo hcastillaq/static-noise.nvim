@@ -184,6 +184,17 @@ vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>")
 ```
 
+## Prueba visual con LazyVim limpio
+
+El entorno Docker de desarrollo instala un clone limpio de [LazyVim Starter](https://github.com/LazyVim/starter), elimina su `.git`, registra el checkout local de este tema como plugin y valida la carga real de LazyVim, Snacks Explorer y Lualine:
+
+```sh
+docker build -f Dockerfile.dev -t static-noise.nvim-lazyvim-test .
+docker run --rm -it static-noise.nvim-lazyvim-test
+```
+
+Este Dockerfile es únicamente un entorno de desarrollo y verificación visual; no es un método de instalación para usuarios finales.
+
 ## Licencia
 
 MIT © [Hernan Castilla](https://github.com/hcastillaq)
